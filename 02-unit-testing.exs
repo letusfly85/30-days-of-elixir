@@ -7,12 +7,14 @@ defmodule MyTest do
 
   def test_assert(_) do                     # method name starting with "test" and accepting one arg
     assert 1 + 1 == 2
+    #assert 1 + 1 == 2
     #assert 1 + 1 == 3                      # Elixir is smart! No need for assert_equal, assert_gte, etc.
                                             # And we still get great failure messages, yipee!
                                             # 1) test_assert (MyTest)
                                             #    ** (ExUnit.ExpectationError)
                                             #                 expected: 2
                                             #      to be equal to (==): 3
+
   end
 
   test "refute is opposite of assert" do    # test macro accepts string as test name
@@ -32,3 +34,6 @@ defmodule MyTest do
   end
 
 end
+
+# this is not be evaluated as test case.
+MyTest.test_assert(0)
