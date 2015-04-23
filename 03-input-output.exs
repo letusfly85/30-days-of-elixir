@@ -3,6 +3,10 @@
 
 defmodule CowInterrogator do
 
+  def get_last_name do
+    String.strip IO.gets("What is your last name? ")
+  end
+
   def get_name do
     String.strip IO.gets("What is your name? ")
   end
@@ -12,6 +16,7 @@ defmodule CowInterrogator do
   end
 
   def interrogate do
+    last_name = get_last_name
     name = get_name
     case String.downcase(get_cow_lover) do
       "y" ->
@@ -42,7 +47,11 @@ defmodule InputOutputTest do
 
   test "read file" do
     art = CowInterrogator.cow_art
-    assert strip(art) |> first == "("
+
+    #assert strip(art) |> first == "("
+
+    # should be fail
+    assert strip(art) |> first == ")"
   end
 end
 
