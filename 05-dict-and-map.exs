@@ -10,6 +10,10 @@ defmodule MapTest do
     %{foo: 'bar', baz: 'quz'}
   end
 
+  def sampleDict do
+    %{foo: 'bar', baz: 'quz'}
+  end
+
   test "Map.get" do
     assert Map.get(sample, :foo) == 'bar'
     assert Map.get(sample, :non_existent) == nil
@@ -36,6 +40,11 @@ defmodule MapTest do
   test "Map.put" do
     assert Map.put(sample, :foo, 'bob') == %{foo: 'bob', baz: 'quz'}
     assert Map.put(sample, :far, 'bar') == %{foo: 'bar', baz: 'quz', far: 'bar'}
+  end
+
+  test "HashDict.put" do
+    assert Dict.put(sampleDict, :foo, 'bob') == %{foo: 'bob', baz: 'quz'}
+    assert Dict.put(sampleDict, :far, 'bar') == %{foo: 'bar', baz: 'quz', far: 'bar'}
   end
 
   test "Map.values" do
