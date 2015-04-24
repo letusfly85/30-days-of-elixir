@@ -4,9 +4,13 @@ defmodule User do
   defstruct email: nil, password: nil
 end
 
+defmodule Emp do
+  defstruct employeeId: nil, departmentCode: nil
+end
+
 defimpl String.Chars, for: User do
   def to_string(%User{email: email}) do
-    email
+    email <> "_"
   end
 end
 
@@ -34,6 +38,10 @@ defmodule RecordTest do
     %User{email: "kai@example.com", password: "trains"} # special % syntax for struct creation
   end
 
+  def sampleEmp do
+    %Emp{employeeId: 1, departmentCode: "R and D"} # special % syntax for struct creation
+  end
+
   test "defstruct" do
     assert sample == %{__struct__: User, email: "kai@example.com", password: "trains"}
   end
@@ -49,7 +57,7 @@ defmodule RecordTest do
   end
 
   test "protocol" do
-    assert to_string(sample) == "kai@example.com"
+    assert to_string(sample) == "kai@example.com_"
   end
 end
 
