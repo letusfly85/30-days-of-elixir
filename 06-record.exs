@@ -10,7 +10,8 @@ end
 
 defimpl String.Chars, for: User do
   def to_string(%User{email: email}) do
-    email <> "_"
+    #email <> "_"
+    email
   end
 end
 
@@ -54,10 +55,10 @@ defmodule RecordTest do
     u = sample
     u2 = %User{u | email: "tim@example.com"}
     assert u2 == %User{email: "tim@example.com", password: "trains"}
+    assert sample  == %User{email: "kai@example.com", password: "trains"}
   end
 
   test "protocol" do
-    assert to_string(sample) == "kai@example.com_"
+    assert to_string(sample) == "kai@example.com"
   end
 end
-
