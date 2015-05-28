@@ -50,9 +50,29 @@ defmodule Fib2 do
   def fib2([first, second | tail], n) do
     fib2([first + second] ++ [first, second] ++ tail, n - 1)
   end
+
 end
 
+defmodule MyFib do
+  @moduledoc """
+    Fibonacci Sequence function.
+  """
 
-#import Fib
-Enum.each(Fib.fib(30), &IO.puts(&1))
+  @seed [0, 1]
 
+  def fib(n) when n < 2 do
+    Enum.take(@seed, n+1)
+  end
+
+  def fib(n) when n >= 2 do
+    [fst, snd | _] = Enum.reverse(fib(n-1))
+
+    fib(n-1) ++ [fst + snd] 
+  end
+end
+
+for x <- (Enum.to_list 1..10) do
+  IO.puts("##############################")
+  Enum.each(MyFib.fib(x), &IO.puts(&1))
+  IO.puts("##############################")
+end

@@ -18,7 +18,10 @@ defmodule Fib do
     fib(@seed, n - 2)
   end
 
-  def fib(acc, 0), do: acc
+  #def fib(acc, 0), do: acc
+  def fib(acc, 0) do
+    acc
+  end
 
   def fib(acc, n) do
     fib(acc ++ [Enum.at(acc, -2) + Enum.at(acc, -1)], n - 1)
