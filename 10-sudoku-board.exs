@@ -37,8 +37,9 @@ defmodule SudokuBoardTest do
 
   test "solved? on solved board" do
     board = [
-      [1, 2],
-      [2, 1]
+      [1, 2, 3],
+      [2, 3, 1],
+      [3, 1, 2]
     ]
     assert solved?(board)
   end
