@@ -33,12 +33,13 @@ end
 
 defmodule Spawner do
   def start do
-    limit = 5
+    limit = 10
     {foo, _foo_monitor} = spawn_monitor(Pinger, :ping, ["ping", limit])
     {bar, _bar_monitor} = spawn_monitor(Pinger, :ping, ["pong", limit])
     {baz, _baz_monitor} = spawn_monitor(Pinger, :ping, ["pung", limit])
-    send foo, {[bar, baz, foo], "start", 0}
-    wait [foo, bar, baz]
+    {gun, _baz_monitor} = spawn_monitor(Pinger, :ping, ["bung", limit])
+    send foo, {[bar, baz, gun], "start", 0}
+    wait [bar, baz, gun]
   end
 
   @doc "Waits for all processes to finish before exiting."
