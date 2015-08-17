@@ -21,16 +21,23 @@ defmodule Ping do
   Ping a single IP address and return true if there is a response."
   """
   def ping(ip) do
-    result = System.cmd(ping_cmd(ip))
-    not Regex.match?(~r/100(\.0)?% packet loss/, result)
+    try do
+      result = System.cmd("ping", ping_args(ip))
+      alive? = Regex.match?(~r/100(\.0)?% packet loss/, result)
+      {:ok, ip, alive?}
+    rescue
+      e -> {:error, ip, e}
+    end
   end
 
-  def ping_cmd(ip) do
-    "ping -c 1 #{if darwin?, do: '-W', else: '-w'} 5 -s 1 #{ip}"
+  def ping_args(ip) do
+    wait_opt = if darwin?, do: '-W', else: '-w'
+    ["-c", "1", wait_opt,  "5", "-s", "1", ip]
   end
 
   def darwin? do
-    System.cmd("uname") |> String.strip == "Darwin"
+    {output, 0} = System.cmd("uname", []) 
+    String.rstrip(output) == "Darwin"
   end
 end
 
@@ -41,7 +48,9 @@ defmodule Subnet do
   def ping(subnet) do
     all = ips(subnet)
     Enum.each all, fn ip ->
-      Process.spawn(Ping, :ping_async, [ip, self])
+        IO.puts(ip)
+      # Process.spawn(Ping, :ping_async, [ip, self])
+      Task.start(Ping, :ping_async, [ip, self])
     end
     wait HashDict.new, Enum.count(all)
   end
@@ -51,7 +60,7 @@ defmodule Subnet do
   """
   def ips(subnet) do
     subnet = Regex.run(~r/^\d+\.\d+\.\d+\./, subnet) |> Enum.at(0)
-    Enum.to_list(1..254) |> Enum.map fn i -> "#{subnet}#{i}" end
+    Enum.to_list(1..100) |> Enum.map fn i -> "#{subnet}#{i}" end
   end
 
   defp wait(dict, 0), do: dict
